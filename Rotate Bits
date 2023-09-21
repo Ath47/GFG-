@@ -1,0 +1,15 @@
+Given an integer N and an integer D, rotate the binary representation of the integer N by D digits to the left as well as right and return the results in their decimal representation after each of the rotation.
+Note: Integer N is stored using 16 bits. i.e. 12 will be stored as 0000000000001100.
+
+class Solution
+{
+  public:
+        vector <int> rotate (int n, int d)
+        {
+           int n1, n2;
+           d %= 16;
+           n1 = (n << d | (n >> (16 - d)))&0xFFFF;
+           n2 = (n >> d | (n << (16 - d)))&0xFFFF;
+           return {n1, n2};
+        }
+};
