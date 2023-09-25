@@ -1,0 +1,46 @@
+Given two integer array A and B of size N each.
+A sum combination is made by adding one element from array A and another element of array B.
+Return the maximum K valid sum combinations from all the possible sum combinations.
+
+Note : Output array must be sorted in non-increasing order.
+
+
+class Solution {
+  public:
+    vector<int> maxCombinations(int N, int K, vector<int> &A, vector<int> &B) {
+        
+        // Create a max heap of pairs (sum, indices)
+        priority_queue<pair<int, pair<int, int>>> pq;
+        
+        sort(A.begin(), A.end());
+        sort(B.begin(), B.end());
+        
+        /* Initialize the max heap with the maximum possible sum for each 
+           element in A and the largest element in B
+       */
+        for(int i = 0; i < N; i++) {
+            pq.push({A[i] + B[N - 1], {i, N - 1}});
+        }
+        
+        vector<int> res;
+        
+        /* Continue popping elements from the max heap and pushing new
+           elements until K elements are collected 
+        */
+        while(!pq.empty() && K --) {
+            auto itr = pq.top();
+            pq.pop();
+            int temp = itr.first;
+            int a = itr.second.first;
+            int b = itr.second.second;
+            res.push_back(temp);
+            
+            /* If there are more elements in array B, push the next combination 
+            into the heap */
+            if(b) pq.push({A[a] + B[b - 1], {a, b - 1}});
+            
+        }
+        
+        return res;
+    }
+};
