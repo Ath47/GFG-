@@ -1,0 +1,38 @@
+Find 4 numbers in array whose sum = k
+where q1 <= q2 <= q3 <= q4
+
+
+class Solution{
+    public:
+    // arr[] : int input array of integers
+    // k : the quadruple sum required
+    vector<vector<int> > fourSum(vector<int> &arr, int k) {
+        vector<vector<int>> ans;
+        set<vector<int>> st;
+        int n = arr.size();
+        sort(arr.begin(), arr.end());
+        
+        for(int i = 0; i < n; i++) {
+            for(int j = i + 1; j < n; j++) {
+                int l = j + 1, r = n - 1;
+                while(l < r) {
+                    int sum = arr[i] + arr[j] + arr[l] + arr[r];
+                    if(sum == k) {
+                        st.insert({arr[i], arr[j], arr[l], arr[r]});
+                        l++;
+                        r--;
+                    }else if(sum < k) {
+                        l++;
+                    }else {
+                        r--;
+                    }
+                }
+            }
+            }
+            for(auto itr: st) {
+                ans.push_back(itr);
+            }
+        
+        return ans;
+    }
+};
