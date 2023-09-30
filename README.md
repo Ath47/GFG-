@@ -1,2 +1,2 @@
-# GFG-
+# GFG
 Daily GFG solutions
