@@ -1,0 +1,29 @@
+Given a string consisting of lower case English alphabets, the task is to find the number of distinct subsequences of the string
+Note: Answer can be very large, so, ouput will be answer modulo 109+7.
+
+class Solution{
+  public:	
+	int distinctSubsequences(string s)
+	{
+	    int n = s.size();
+	    int mod = 1e9 + 7;
+	    unordered_map<char, int> mp;    
+	    vector<long long> dp(n + 1, 0);
+	    dp[0] = 1;
+	    for(int i = 1; i <= n; ++i) {
+	        char currElement = s[i - 1];
+	        if(mp.find(currElement) != mp.end()) {
+	            int j = mp[currElement];
+	            dp[i] = (2 * dp[i - 1]) % mod;
+	            dp[i] = (dp[i] - dp[j - 1] + mod) % mod;
+	        } else {
+	            dp[i] = (2 * dp[i - 1]) % mod;
+	        }
+	        mp[currElement] = i;
+	    }
+	    return dp[n];
+	}
+};
+
+Expected Time Complexity: O(|str|)
+Expected Auxiliary Space: O(|str|)
