@@ -1,0 +1,32 @@
+Given a string of lowercase alphabets, count all possible substrings (not necessarily distinct) that have exactly k distinct characters. 
+
+class Solution
+{
+  public:
+    long long int solve(string &s,int k){
+    vector<long long int> freq (26,0);
+    long long int beg =0, cnt=0, distinct=0;
+      
+    for(int i=0; i<s.size(); i++){
+        if(freq[s[i]-'a'] == 0)
+            distinct++;
+            freq[s[i] - 'a'] ++;
+          
+        while(distinct > k){
+            freq[s[beg] - 'a'] --;
+            if(freq[s[beg] - 'a'] == 0)
+            distinct --;
+            beg ++;
+        }
+        if(distinct <= k)
+        cnt = cnt + i - beg + 1;
+    }
+      return cnt;
+    }
+    long long int substrCount(string s, int k) {
+    	return solve(s,k) - solve(s,k-1);
+    }
+};
+
+Expected Time Complexity: O(|S|).
+Expected Auxiliary Space: O(1).
