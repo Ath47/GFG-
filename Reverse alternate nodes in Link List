@@ -1,0 +1,66 @@
+Given a linked list, you have to perform the following task:
+
+Extract the alternative nodes starting from second node.
+Reverse the extracted list.
+Append the extracted list at the end of the original list.
+Note: Try to solve the problem without using any extra memory.
+
+/*
+  reverse alternate nodes and append at the end
+  The input list will have at least one element  
+  Node is defined as 
+  struct Node
+  {
+      int data;
+      struct Node *next;
+    
+      Node(int x){
+        data = x;
+        next = NULL;
+      }
+    
+   };
+
+*/
+class Solution
+{
+public:
+    Node* rearrange(Node* head)
+    {
+        if (!head || !head->next || !head->next->next)
+        {
+            return head;
+        }
+
+        Node* odd = head;
+        Node* even = head->next;
+        Node* evenStart = even;
+
+        while (even && even->next)
+        {
+            odd->next = even->next;
+            odd = odd->next;
+            even->next = odd->next;
+            even = even->next;
+        }
+        odd->next = nullptr;
+        
+        Node* prev = nullptr;
+        Node* current = evenStart;
+        Node* nextNode = nullptr;
+
+        while (current)
+        {
+            nextNode = current->next;
+            current->next = prev;
+            prev = current;
+            current = nextNode;
+        }
+        odd->next = prev;
+
+        return head;
+    }
+};
+
+Expected Time Complexity: O(N)
+Expected Auxiliary Space: O(1)
