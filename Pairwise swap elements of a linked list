@@ -1,0 +1,33 @@
+Given a singly linked list of size N. The task is to swap elements in the linked list pairwise.
+For example, if the input list is 1 2 3 4, the resulting list after swaps will be 2 1 4 3.
+Note: You need to swap the nodes, not only the data. If only data is swapped then driver will print -1.
+
+class Solution
+{
+    public:
+    Node* pairWiseSwap(struct Node* head) 
+    {
+        if(!head || !head -> next) return head;
+        
+        Node* prev = head;
+        Node* curr = head -> next;
+        Node* nh = curr;
+        while(true) {
+            Node* nn = curr -> next;
+            curr -> next = prev;
+            
+            if(!nn || !nn -> next) {
+                prev -> next = nn;
+                break;
+            }
+            
+            prev -> next = nn -> next;
+            prev = nn;
+            curr = prev -> next;
+        }
+        return nh;
+    }
+};
+
+Expected Time Complexity: O(N).
+Expected Auxiliary Space: O(1).
