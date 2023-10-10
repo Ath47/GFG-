@@ -1,0 +1,84 @@
+Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at distance k from the given target node. No parent pointers are available.
+Note:
+
+You have to return the list in sorted order.
+The tree will not contain duplicate values.
+
+/* A binary Tree node
+struct Node
+{
+    int data;
+    struct Node *left, *right;
+};
+*/
+
+class Solution {
+private:
+    unordered_map<Node*, Node*> ancestor;
+    Node* targetNode;
+
+    // Helper function to find the target node and build ancestor map
+    void helper(Node* node, int target) {
+        if (node->data == target && !targetNode) {
+            targetNode = node;
+        }
+
+        if (node->left) {
+            ancestor[node->left] = node;
+            helper(node->left, target);
+        }
+
+        if (node->right) {
+            ancestor[node->right] = node;
+            helper(node->right, target);
+        }
+    }
+
+public:
+    vector<int> KDistanceNodes(Node* root, int target, int k) {
+        ancestor.clear();
+        targetNode = nullptr;
+        helper(root, target);
+
+        queue<pair<Node*, int>> qu;
+        qu.push({targetNode, 0});
+        vector<int> res;
+        unordered_set<Node*> visited;
+        visited.insert(targetNode);
+
+        while (!qu.empty()) {
+            Node* node = qu.front().first;
+            int distance = qu.front().second;
+            qu.pop();
+
+            if (distance == k) {
+                res.push_back(node->data);
+                continue;
+            }
+
+            if (ancestor.find(node) != ancestor.end()) {
+                if (visited.find(ancestor[node]) == visited.end()) {
+                    qu.push({ancestor[node], distance + 1});
+                    visited.insert(ancestor[node]);
+                }
+            }
+
+            if (node->left && visited.find(node->left) == visited.end()) {
+                qu.push({node->left, distance + 1});
+                visited.insert(node->left);
+            }
+
+            if (node->right && visited.find(node->right) == visited.end()) {
+                qu.push({node->right, distance + 1});
+                visited.insert(node->right);
+            }
+        }
+
+        sort(res.begin(), res.end());
+
+        return res;
+    }
+};
+
+Expected Time Complexity: O(N*logN)
+Expected Auxiliary Space: O(Height of tree)
