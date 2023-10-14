@@ -1,0 +1,56 @@
+Given two Binary Search Trees. Find the nodes that are common in both of them, ie- find the intersection of the two BSTs.
+Note: Return the common nodes in sorted order.
+
+Input:
+BST1:
+                  5
+               /     \
+             1        10
+           /   \      /
+          0     4    7
+                      \
+                       9
+BST2:
+                10 
+              /    \
+             7     20
+           /   \ 
+          4     9
+Output: 4 7 9 10
+
+class Solution
+{
+    public:
+    unordered_map<int, int> mp;
+    void helper(Node* root) {
+        if(!root) return;
+        
+        mp[root -> data] ++;
+        
+        helper(root -> left);
+        helper(root -> right);
+        
+    }
+    vector <int> findCommon(Node *root1, Node *root2) {
+        vector<int> res;
+        
+        helper(root1);
+        helper(root2);
+        
+        for(auto itr: mp) {
+            if(itr.second == 2) {
+                res.push_back(itr.first);
+            }
+        }
+        sort(res.begin(), res.end());
+        return res;
+        
+    }
+};
+
+Expected Time Complexity: O(N1 + N2) where N1 and N2 are the sizes of the 2 BSTs.
+Expected Auxiliary Space: O(H1 + H2) where H1 and H2 are the heights of the 2 BSTs.
+
+Constraints:
+1 <= Number of Nodes <= 105
+1 <= Node data <= 109
