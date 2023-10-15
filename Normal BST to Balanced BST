@@ -1,0 +1,60 @@
+Given a Binary Search Tree, modify the given BST such that it is balanced and has minimum possible height. Return the balanced BST.
+
+Example1:
+
+Input:
+       30
+      /
+     20
+    /
+   10
+Output:
+     20
+   /   \
+ 10     30
+
+
+/*Structure of the Node of the BST is as
+struct Node
+{
+	int data;
+	Node* left, *right;
+};
+*/
+
+class Solution{
+    
+    public:
+    // Your are required to complete this function
+    // function should return root of the modified BST
+    Node* buildBalancedTree(Node* root)
+    {
+    	vector<Node* > temp;
+    	inorder(root, temp);
+    	return helper(temp, 0, temp.size() - 1);
+    }
+    void inorder(Node* root, vector<Node* >& temp) {
+        if(!root) return;
+        inorder(root -> left, temp);
+        temp.push_back(root);
+        inorder(root -> right, temp);
+    }
+    Node* helper(vector<Node* >&temp, int l, int r) {
+        if(l > r) return nullptr;
+        int mid = l + (r - l) / 2;
+        Node* nn = temp[mid];
+        
+        nn -> left = helper(temp, l, mid - 1);
+        nn -> right = helper(temp, mid + 1, r);
+        return nn;
+    }
+    
+};
+
+Expected Time Complexity: O(N)
+Expected Auxiliary Space: O(N)
+Here N denotes total number of nodes in given BST.
+
+Constraints:
+1 <= N <= 105
+1 <= Node data <= 109
