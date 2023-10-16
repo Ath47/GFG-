@@ -1,0 +1,73 @@
+You are given an n x n binary matrix grid. You are allowed to change at most one 0 to be 1. A group of connected 1s forms an island. Two 1s are connected if they share
+one of their sides with each other.
+Return the size of the largest island in the grid after applying this operation.
+
+Example 1:
+Input: 
+grid = [[1,0],[0,1]]
+Output:
+3
+Explanation:
+Change any one 0 to 1 and connect two 1s, then we get an island with area = 3.
+
+class Solution
+{
+public:
+    int largestIsland(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int maxSize = 0;
+        unordered_map<int, int> mp;
+        int id = 2;
+        
+        int dir[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        
+        std::function<int(int, int)> dfs = [&](int i, int j) -> int {
+            if(i < 0 || j > n || i >= n || j >= n || grid[i][j] != 1) {
+                return 0;
+            }
+            grid[i][j] = id;
+            int size = 1;
+            for(const auto& itr: dir) {
+                size += dfs(i + itr[0], j + itr[1]);
+            }
+            return size;
+        };
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(grid[i][j] == 1) {
+                    int currSize = dfs(i, j);
+                    mp[id] = currSize;
+                    maxSize = max(maxSize, currSize);
+                    id++;
+                }
+            }
+        }
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (grid[i][j] == 0) {
+                    unordered_set<int> neighbour;
+                    for(const auto&itr : dir) {
+                        int x = i + itr[0];
+                        int y = j + itr[1];
+                        if (x >= 0 && x < n && y >= 0 && y < n) {
+                            neighbour.insert(grid[x][y]);
+                        }
+                    }
+                    int newSize = 1;
+                    for(auto itr: neighbour) {
+                        newSize += mp[itr];
+                    }
+                    maxSize = max(maxSize, newSize);
+                }
+            }
+        }
+        return maxSize;
+    }
+};
+
+
+
+Constraints:
+
+1 <= n <= 500
+0 <= grid[i][j] <= 1 (grid[i][j] ∈ {0, 1} and 0<=i,j<n)
