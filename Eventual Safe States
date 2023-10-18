@@ -1,0 +1,63 @@
+A directed graph of V vertices and E edges is given in the form of an adjacency list adj. Each node of the graph is labelled with a distinct integer in the range 0 to V - 1.
+A node is a terminal node if there are no outgoing edges. A node is a safe node if every possible path starting from that node leads to a terminal node.
+You have to return an array containing all the safe nodes of the graph. The answer should be sorted in ascending order.
+
+
+Input: In the form of Image
+
+Output:
+2 4 5 6
+Explanation:
+The given graph is shown above.
+Nodes 5 and 6 are terminal nodes as there are no 
+outgoing edges from either of them. 
+Every path starting at nodes 2, 4, 5, and 6 all 
+lead to either node 5 or 6.
+
+class Solution {
+  public:
+    vector<int> eventualSafeNodes(int V, vector<int> adj[]) {
+        vector<int> out_deg(V, false);
+        vector<int> res;
+        vector<vector<int>> temp(V);
+        
+        for(int i = 0; i < V; i++) {
+            for(int neighbour: adj[i]) {
+                out_deg[i] ++;
+                temp[neighbour].push_back(i);
+            }
+        }
+        
+        queue <int> qu;
+        for(int i = 0; i < V; i++) {
+            if(out_deg[i] == 0) {
+                qu.push(i);
+            }
+        }
+        while(!qu.empty()) {
+            int node = qu.front();
+            qu.pop();
+            res.push_back(node);
+            for(int neighbour: temp[node]) {
+                out_deg[neighbour]--;
+                if(out_deg[neighbour] == 0) {
+                    qu.push(neighbour);
+                }
+            }
+        }
+        sort(res.begin(), res.end());
+        return res;
+        
+    }
+};
+
+
+
+Expected Time Complexity: O(V + E)
+Expected Space Complexity: O(V)
+
+Constraints:
+1 <= V <= 104
+0 <= E <= 104
+The graph won't contain self loops.
+Each node in the graph has a distinct value in the range 0 to V - 1.
