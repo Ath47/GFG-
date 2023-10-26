@@ -1,0 +1,35 @@
+Short on funds for the festive season? Register for Hackathon and win cash rewards!  
+
+banner
+Given a number N. Find the minimum number of operations required to reach N starting from 0. You have 2 operations available:
+
+Double the number
+Add one to the number
+Example 1:
+
+Input:
+N = 8
+Output: 4
+Explanation: 
+0 + 1 = 1 --> 1 + 1 = 2 --> 2 * 2 = 4 --> 4 * 2 = 8.
+
+class Solution
+{
+  public:
+    int minOperation(int n)
+    {
+        int res = 0, rem = 0;
+        while(n != 1) {
+            rem += n % 2;
+            n /= 2;
+            res++;
+        }
+        return rem + res + 1;
+    }
+};
+
+Expected Time Complexity: O(LogN)
+Expected Auxiliary Space: O(1)
+
+Constraints:
+1 <= N <= 106
