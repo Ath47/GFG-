@@ -1,0 +1,48 @@
+Given a string of S as input. Your task is to write a program to delete the minimum number of characters from the string so that the resultant string is a palindrome.
+Note: The order of characters in the string should be maintained.
+
+Example 1:
+
+Input: 
+S = "aebcbda"
+Output: 
+2
+Explanation: 
+Remove characters 'e' and 'd'.
+
+class Solution{
+  public:
+    
+    int helper(string& S) {
+        int n = S.size();
+        int L[n];
+        for(int i = n - 1; i >= 0; i--) {
+            int back = 0;
+            for(int j = i; j < n; j++) {
+                if(j == i) {
+                    L[j] = 1;
+                } else if(S[i] == S[j]) {
+                    int temp = L[j];
+                    L[j] = back + 2;
+                    back = temp; 
+                } else {
+                    back = L[j];
+                    L[j] = max(L[j], L[j - 1]);
+                }
+            }
+        }
+        return L[n - 1];
+    }
+    
+    int minimumNumberOfDeletions(string S) { 
+        int n = S.size();
+        int len = helper(S);
+        return (n - len);
+    } 
+};
+
+Expected Time Complexity: O(|S|2)
+Expected Auxiliary Space: O(|S|2)
+
+Constraints:
+1 ≤ |S| ≤ 103
