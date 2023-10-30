@@ -1,0 +1,35 @@
+Given an array of N integers, find the sum of xor of all pairs of numbers in the array arr. In other words, select all possible pairs of i and j 
+from 0 to N-1 (i<j) and determine sum of all (arri xor arrj).
+
+Example 1:
+
+Input : arr[ ] = {7, 3, 5}
+Output : 12
+Explanation:
+All possible pairs and there Xor
+Value: ( 3 ^ 5 = 6 ) + (7 ^ 3 = 4) + ( 7 ^ 5 = 2 ) =  6 + 4 + 2 = 12
+
+class Solution {
+public:
+    long long int sumXOR(int arr[], int n) {
+        long long int res = 0;
+        for (int i = 0; i < 31; i++) {
+            long long int ones = 0, zeroes = 0;
+            for(int j = 0; j < n; j++) {
+                if((arr[j] & (1 << i)) == 0) zeroes++;
+                else ones++;
+            }
+            long long int temp = ones * zeroes;
+            res += (1 << i) * temp;
+        }
+        return res;
+    }
+};
+
+Expected Time Complexity: O(n).
+Expected Auxiliary Space: O(1).
+
+Constraints
+2 ≤ n ≤ 105
+1 ≤ arr[i] ≤ 105
+
