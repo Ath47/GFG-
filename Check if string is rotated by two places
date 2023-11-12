@@ -1,0 +1,39 @@
+Given two strings a and b. The task is to find if the string 'b' can be obtained by rotating (in any direction) string 'a' by exactly 2 places.
+
+Example 1:
+
+Input:
+a = amazon
+b = azonam
+Output: 
+1
+Explanation: 
+amazon can be rotated anti-clockwise by two places, which will make it as azonam.
+
+class Solution
+{
+    public:
+    //Function to check if a string can be obtained by rotating
+    //another string by exactly 2 places.
+    bool isRotated(string str1, string str2)
+    {
+        if(str1.size() != str2.size()) return false;
+        int n = str1.size();
+        
+        if(n <= 2 && str1 == str2) return true;
+        
+        string x = str1.substr(2) + str1.substr(0, 2);
+        string y = str1.substr(n - 2, 2) + str1.substr(0, n - 2);
+        
+        if(x == str2 || y == str2) return true;
+        else return false;
+    }
+
+};
+
+Expected Time Complexity: O(N).
+Expected Auxilary Complexity: O(N).
+Challenge: Try doing it in O(1) space complexity.
+
+Constraints:
+1 ≤ length of a, b ≤ 105
