@@ -1,0 +1,70 @@
+Given a pair of strings of equal lengths, Geek wants to find the better string. The better string is the string having more number of distinct subsequences.
+If both the strings have equal count of distinct subsequence then return str1.
+
+Example 1:
+
+Input:
+str1 = "gfg", str2 = "ggg"
+Output: "gfg"
+Explanation: "gfg" have 6 distinct subsequences whereas "ggg" have 3 distinct subsequences. 
+
+class Solution {
+  public:
+    int helper(string &str)
+
+    {
+
+
+        int arr[26] = {-1};
+
+
+        int count = 1;
+
+
+        for(int i = 0; i<str.length(); i++)
+
+        {
+
+
+            if(arr[str[i] - 'a'] == -1)
+
+            {
+
+                arr[str[i] - 'a'] = count;
+
+                count *= 2;
+            }
+
+            else if(arr[str[i] - 'a'] != -1 )
+
+            {
+
+                int temp = arr[str[i] - 'a'];
+
+                arr[str[i] - 'a'] = count;
+
+                count *= 2;
+
+                count = count - temp;
+
+            }
+
+        }
+
+        return count;
+
+    }
+    string betterString(string str1, string str2) {
+        int s1 = helper(str1);
+        int s2 = helper(str2);
+        
+        return s2 > s1 ? str2 : str1;
+    }
+};
+
+Expected Time Complexity: O( max( str1.length, str2.length ) )
+
+Expected Auxiliary Space: O( max( str1.length, str2.length ) )
+
+Constraints:
+1 <= str1.length , str2.length <= 30
