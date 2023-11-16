@@ -1,0 +1,52 @@
+Given two integers N and K, the task is to find the string S of minimum length such that it contains all possible strings of size N as a substring. The characters of the string should be from integers ranging from 0 to K-1.  
+
+Example 1:
+
+Input:
+N = 2, K = 2
+Output: 
+00110
+Explanation: 
+Allowed characters are from 0 to k-1 (i.e., 0 and 1).
+There are 4 string possible of size N=2 
+(i.e "00", "01","10","11")
+"00110" contains all possible string as a 
+substring. It also has the minimum length.
+
+
+class Solution
+{
+public:
+    void dfs(unordered_set <string>& visited, string beg, vector<int>& edges, int k) {
+        for(int i = 0; i < k; i++) {
+            string curr = beg;
+            curr += (i + '0');
+            if(visited.find(curr) == visited.end()) {
+                visited.insert(curr);
+                dfs(visited, curr.substr(1), edges, k);
+                edges.push_back(i);
+            }
+        }
+    } 
+
+    string findString(int n, int k) {
+        unordered_set<string> visited;
+        string beg = string(n - 1, '0');
+        vector<int> edges;
+        dfs(visited, beg, edges, k);
+        string res;
+        int temp = pow(k, n);
+        for(int i = 0; i < temp; i++) {
+            res += (edges[i] + '0');
+        }
+        res += beg;
+        return res;
+    }
+};
+Expected Time Complexity: O(KNlogK)
+Expected Space Complexity: O(KNN)
+
+Constraints:
+1 ≤ N ≤ 4
+1 < K < 10
+1 < KNN < 106
